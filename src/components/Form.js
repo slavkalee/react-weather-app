@@ -1,15 +1,20 @@
 import React from "react";
 
 const Form = ({ gettingWeather, handleChange, city }) => {
+  const submit = (e) => {
+    e.preventDefault();
+    gettingWeather()
+  }
+
   return (
-    <div className="form">
+    <form onSubmit={submit}>
       <div className="input-container">
         <input value={city} type="text" placeholder="Enter city name" onChange={handleChange} />
       </div>
       <div className="btn-container">
-        <button className="btn-big" onClick={() => gettingWeather()}>add city</button>
+        <button type="submit" className="btn-big">add city</button>
       </div>
-    </div>
+    </form>
   );
 };
 

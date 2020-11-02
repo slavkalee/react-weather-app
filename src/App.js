@@ -32,8 +32,6 @@ function App() {
         const dataWeather = await api_url.json();
         console.log(dataWeather);
 
-        
-
         const getTimeString = (date) => {
           return `${getHourString(date)}:${getMinuteString(date)} PM`;
         };
