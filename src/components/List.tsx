@@ -1,7 +1,12 @@
-import React from "react";
+import React from 'react';
+import { Data } from '../App';
 
-const List = ({ data, removeCard }) => {
+interface Props {
+  data: Data[];
+  removeCard: (id: number | string) => void;
+}
 
+const List: React.FC<Props> = ({ data, removeCard }) => {
   return (
     <>
       {data.map(({ id, name, temp, pressure, sunset, sunrise, icons }) => (

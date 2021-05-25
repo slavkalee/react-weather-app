@@ -1,4 +1,4 @@
-export function getHourString(time) {
+export function getHourString(time: Date) {
   const date = new Date(time);
   const hours = date.getHours();
   if (hours < 10) {
@@ -9,7 +9,7 @@ export function getHourString(time) {
 }
 
 
-export function getMinuteString(time) {
+export function getMinuteString(time: Date) {
   const date = new Date(time);
   const minutes = date.getMinutes();
   if (minutes < 10) {
@@ -19,7 +19,7 @@ export function getMinuteString(time) {
   }
 }
 
-export function tempConverter(k){
+export function tempConverter(k: number){
   const converter = k - 273.15;
   return Math.round(converter);
 };

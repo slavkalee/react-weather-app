@@ -1,38 +1,53 @@
-import moment from "moment";
-import React, { useEffect, useState } from "react";
+import moment from 'moment';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 
-import Form from "./components/Form";
-import List from "./components/List";
-import { getHourString, getMinuteString, tempConverter } from "./utils";
+import Form from './components/Form';
+import List from './components/List';
+import { getHourString, getMinuteString, tempConverter } from './utils';
 
-const API_KEY = "3bdbc0967df76f7af63bbd63cc6e8e60";
+const API_KEY = '3bdbc0967df76f7af63bbd63cc6e8e60';
 
-function App() {
-  const [data, setData] = useState([]);
-  const [city, setCity] = useState("");
+export interface Data {
+  id: number | string;
+  name: string;
+  temp: any;
+  pressure: any;
+  sunset: any;
+  sunrise: any;
+  icons: Icon[]
+}
+
+export interface Icon {
+  icon: any;
+  id: any;
+}
+
+const App: React.FC = () => {
+  const [data, setData] = useState<Data[]>([]);
+  const [city, setCity] = useState<string>('');
 
   useEffect(() => {
-    if (localStorage.getItem("dataStore")) {
-      setData(JSON.parse(localStorage.getItem("dataStore")));
+    if (localStorage.getItem('dataStore')) {
+      setData(JSON.parse(localStorage.getItem('dataStore') || ''));
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("dataStore", JSON.stringify(data));
+    localStorage.setItem('dataStore', JSON.stringify(data));
   }, [data]);
 
-  const handleChange = (e) => setCity(e.target.value);
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
+    setCity(e.target.value);
 
   const API = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`;
 
-  const gettingWeather = async (e) => {
+  const gettingWeather = async () => {
     if (city) {
       try {
         const api_url = await fetch(API);
         const dataWeather = await api_url.json();
-        console.log(dataWeather);
 
-        const getTimeString = (date) => {
+        const getTimeString = (date: Date) => {
           return `${getHourString(date)}:${getMinuteString(date)} PM`;
         };
 
@@ -46,17 +61,16 @@ function App() {
             sunset: getTimeString(dataWeather.sys.sunset),
             sunrise: moment(dataWeather.sys.sunrise).format('LT'),
             icons: dataWeather.weather,
-            
           },
         ]);
       } catch (err) {
-        setCity('')
+        setCity('');
       }
     }
-    setCity("");
+    setCity('');
   };
 
-  const removeCard = (id) => {
+  const removeCard = (id: number | string) => {
     setData(data.filter((item) => item.id !== id));
   };
 
@@ -71,6 +85,6 @@ function App() {
       <List data={data} removeCard={removeCard} />
     </div>
   );
-}
+};
 
 export default App;
